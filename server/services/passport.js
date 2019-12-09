@@ -21,7 +21,8 @@ passport.use(
       {
         clientID:keys.googleClientID,
         clientSecret:keys.googleClientSecret,
-        callbackURL:"/auth/google/callback"
+        callbackURL:"/auth/google/callback",
+        proxy:true //tell strategy that when request go throught any proxy (ex Heroku proxy)is totally fine,still use  "https"
       },
   
       async (accessToken,refreshToken,profile,done) =>{     //the callback function would excute when passport has used the 'code' and exchanged the data back.
