@@ -13,14 +13,13 @@ module.exports = app => {
     passport.authenticate("google") //now the google redirect user to the URL with the authenticated 'code',when passport seeing that it would handle it diffenertly from above route.
   );
 
-
-  app.get("/api/logout",(req,res)=>{
-    req.logout(); // take the cookie contained with user id ,and kill it. 
+  app.get("/api/logout", (req, res) => {
+    req.logout(); // take the cookie contained with user id ,and kill it.
     res.send(req.user);
-  })
-  
-  app.get("/api/current_user",(req,res)=>{
-    res.send(req.user)
-    //res.send(req.session) // the cookie-session midlleware extract the data  out of cookie,and asign it to 'req.session' 
-  })
+  });
+
+  app.get("/api/current_user", (req, res) => {
+    // console.log(req.session);
+    res.send(req.user);
+  });
 };
