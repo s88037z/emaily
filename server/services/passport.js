@@ -13,7 +13,7 @@ passport.serializeUser((user, done) => {
 
 // deserialize the cookie into  the usel model instance
 passport.deserializeUser(async (id, done) => {
-  // arg1(id) is the token we previos stuffed to a cookie
+  // arg1(id) is the token we previous stuffed to a cookie
   let user = await User.findById(id);
   done(null, user); //the user model instance(arg2) is going to add on req object as "req.user"
 });
@@ -28,14 +28,13 @@ passport.use(
     },
 
     async (accessToken, refreshToken, profile, done) => {
-      //the callback function would excute when passport has used the 'code' and exchanged the data back.
+      //the callback function would execute when passport has used the 'code' and exchanged the data back.
       let user = await User.findOne({ googleId: profile.id });
       if (user) {
         done(null, user); // call the done function to tell passport continue the process,it need two args : (error obj ,user record )
       } else {
-        new User({ googleId: profile.id }).save().then(newUser => {
-          done(null, newUser);
-        });
+        const newUser = await new User({ googleId: profile.id }).save();
+        done(null, newUser);
       }
     }
   )
