@@ -31,7 +31,7 @@ passport.use(
       //the callback function would execute when passport has used the 'code' and exchanged the data back.
       let user = await User.findOne({ googleId: profile.id });
       if (user) {
-        done(null, user); // call the done function to tell passport continue the process,it need two args : (error obj ,user record )
+        done(null, user); // call the done function to tell passport continue the process(serialize),it need two args : (error obj ,user record )
       } else {
         const newUser = await new User({ googleId: profile.id }).save();
         done(null, newUser);

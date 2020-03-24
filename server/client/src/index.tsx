@@ -6,6 +6,7 @@ import logger from "redux-logger";
 import { createEpicMiddleware } from "redux-observable";
 import App from "./components/App";
 import rootReducer from "./reducers";
+import { AuthState } from "./reducers/auth/authReducer";
 import rootEpic from "./epics";
 // import { AuthActionType } from "./reducers/auth/authActions";
 
@@ -15,6 +16,10 @@ const bindMiddleware = (middleware: Middleware[]) => {
   }
   return applyMiddleware(...middleware, logger);
 };
+
+export interface StoreState {
+  auth: AuthState;
+}
 
 //createStore(reducer, [preloadedState], [enhancer])
 const epicMiddleware = createEpicMiddleware();

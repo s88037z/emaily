@@ -1,12 +1,15 @@
 import React from "react";
+import { useSelector } from "react-redux";
 import { makeStyles } from "@material-ui/core/styles";
 import { AppBar, Toolbar, Button } from "@material-ui/core";
+import { User } from "../reducers/auth/authReducer";
+import { StoreState } from "../index";
 
 const useStyles = makeStyles((theme: any) => ({
   root: {
     flexGrow: 1,
     backgroundColor: theme.palette.secondary[600],
-    "& button": {
+    "& a": {
       textTransform: "none"
     }
   },
@@ -19,8 +22,37 @@ const useStyles = makeStyles((theme: any) => ({
     fontSize: 24
   }
 }));
-export default function Header() {
+
+interface Props {
+  onLogoutClick: () => void;
+}
+export default function Header({ onLogoutClick }: Props) {
+  const user = useSelector<StoreState, User | null | false>(
+    state => state.auth.user
+  );
   const classes = useStyles();
+
+  const renderContent = () => {
+    switch (user) {
+      case null:
+        return;
+      case false:
+        return (
+          <Button href="/auth/google" color="inherit">
+            Login with Google
+          </Button>
+        );
+      default:
+        return (
+          <div>
+            {`Hello ID: ${user._id.slice(0, 3)}...  `}
+            <Button color="inherit" onClick={onLogoutClick}>
+              Logout
+            </Button>
+          </div>
+        );
+    }
+  };
   return (
     <>
       <AppBar className={classes.root}>
@@ -28,11 +60,7 @@ export default function Header() {
           <a className={classes.title} href="/">
             Emaily
           </a>
-          {/* <Typography className={classes.title} variant="h6" href="/">
-            Emaily
-          </Typography> */}
-
-          <Button color="inherit">Login with Google</Button>
+          {renderContent()}
         </Toolbar>
       </AppBar>
     </>

@@ -10,12 +10,16 @@ module.exports = app => {
   );
   app.get(
     "/auth/google/callback",
-    passport.authenticate("google") //now the google redirect user to the URL with the authenticated 'code',when passport seeing that it would handle it differently from above route.(take the code and exchange profile with google)
+    passport.authenticate("google"), //(it's a middleware)now the google redirect user to the URL with the authenticated 'code',when passport seeing that it would handle it differently from above route.(take the code and exchange profile with google)
+    //after the authenticate is called
+    (req, res) => {
+      res.redirect("/surveys"); //tell 'browser' to redirect
+    }
   );
 
   app.get("/api/logout", (req, res) => {
     req.logout(); // take the cookie contained with user id ,and kill it.
-    res.send(req.user);
+    res.send(`${req.user},"logout"`);
   });
 
   app.get("/api/current_user", (req, res) => {

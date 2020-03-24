@@ -1,11 +1,11 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useCallback } from "react";
 import { createMuiTheme, ThemeProvider } from "@material-ui/core/styles";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import { cyan } from "@material-ui/core/colors";
 import Container from "./Container";
 import Header from "../components/Header";
 import { useDispatch } from "react-redux";
-import { fetchUser } from "../reducers/auth/authActions";
+import { fetchUser, logout } from "../reducers/auth/authActions";
 
 const theme = createMuiTheme({
   palette: {
@@ -24,15 +24,18 @@ const Landing = () => {
 export default function App() {
   const dispatch = useDispatch();
   useEffect(() => {
-    console.log("dispatch in App");
     dispatch(fetchUser());
   }, [dispatch]);
 
+  const onLogoutClick = useCallback(() => {
+    console.log("logout click");
+    dispatch(logout());
+  }, [dispatch]);
   return (
     <>
       <div>
         <ThemeProvider theme={theme}>
-          <Header />
+          <Header onLogoutClick={onLogoutClick} />
           <Container>
             <Router>
               <Switch>
